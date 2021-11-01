@@ -1,0 +1,97 @@
+$primary-color: #fff;
+$secondary-color: #5cb85c;
+
+.home {
+  width: 100%;
+  .home-banner {
+    width: 100%;
+    height: 17rem;
+    margin: auto;
+
+    background-color: $secondary-color;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    h1 {
+      color: $primary-color;
+      font-weight: bold;
+      font-size: 4rem;
+    }
+
+    p {
+      color: $primary-color;
+      font-size: 2.6rem;
+      letter-spacing: 0.1rem;
+    }
+  }
+  .home-container {
+    width: 114rem;
+    min-height: 40rem;
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    .category {
+      position: relative;
+      z-index: 1;
+
+      display: flex;
+
+      &::after {
+        content: "";
+        width: 100%;
+        height: 2px;
+
+        background-color: #e4e4e4;
+
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+      .category-item {
+        width: 10%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: relative;
+        z-index: 10;
+
+        font-size: 2rem;
+
+        cursor: pointer;
+
+        transition: 0.2s ease-in-out;
+      }
+      .category-item.active {
+        color: $secondary-color;
+        transition: 0.2s ease-in-out;
+
+        &::after {
+          content: "";
+          width: 100%;
+          height: 2px;
+
+          animation: scaleWidth 0.3s ease-in-out;
+
+          background-color: $secondary-color;
+
+          position: absolute;
+          bottom: 0;
+          left: 0;
+        }
+      }
+    }
+  }
+}
+@keyframes scaleWidth {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}

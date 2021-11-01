@@ -1,0 +1,33 @@
+$primary-color: #fff;
+$secondary-color: #5cb85c;
+
+footer {
+  background-color: #f3f3f3;
+  height: 5.8rem;
+
+  display: flex;
+  align-items: center;
+  .footer {
+    width: 114rem;
+    margin: auto;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .footer-logo {
+      color: $secondary-color;
+      font-weight: bold;
+      font-size: 1.6rem;
+    }
+
+    p {
+      color: #bbbbbb;
+      margin-left: 1rem;
+      a {
+        color: $secondary-color;
+        font-weight: bold;
+      }
+    }
+  }
+}
