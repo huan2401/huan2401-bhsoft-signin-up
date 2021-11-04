@@ -1,21 +1,18 @@
 export function UserProfile(state: any, action: any) {
   switch (action.type) {
     case "SAVE-PROFILE":
-      localStorage.setItem("token", action.payload.token);
       return {
         login: true,
+        profile: action.payload,
       };
     case "GET-USER":
       return {
-        username: action.payload.username,
-      };
-    case "LOGOUT":
-      return {
-        login: false,
+        login: true,
+        profile: action.payload,
       };
     default:
       return {
-        login: false,
+        ...state,
       };
   }
 }

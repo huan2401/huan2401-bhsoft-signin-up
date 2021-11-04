@@ -2,14 +2,23 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./header.scss";
+import { getUserProfile } from "../../actions/user";
 
 const Header: React.FC = () => {
   const [activeNav, setActiveNav] = React.useState(0);
   let nav = ["Home", "Sign In", "Sign Up"];
-  const username = useSelector((state: any) => state.user);
+
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(getUserProfile());
+  }, [activeNav]);
+  const username: any = useSelector((state: any) => state.user);
 
   if (localStorage.getItem("token")) {
-    nav = ["Home", "New Article", "Setting", `${username.username}`];
+    nav = ["Home", "New Article", "Setting", `User`];
+  }
+  if (localStorage.getItem("token") && username.profile) {
+    nav = ["Home", "New Article", "Setting", `${username.profile.username}`];
   }
 
   const location = useLocation();

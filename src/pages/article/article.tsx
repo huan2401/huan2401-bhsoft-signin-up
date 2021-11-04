@@ -1,15 +1,17 @@
 import React from "react";
 import "./article.scss";
-import { createArticle } from "../../actions/user";
+import { createArticle } from "../../actions/articles";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 
 const Article: React.FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [title, setTitle] = React.useState("");
   const [about, setAbout] = React.useState("");
   const [write, setWrite] = React.useState("");
-  const [tag, setTag] = React.useState([""]);
+  const [tag, setTag] = React.useState([]);
 
   const handleTitle = (e: any) => {
     setTitle(e.target.value);
@@ -24,14 +26,15 @@ const Article: React.FC = () => {
   };
 
   const handleTag = (e: any) => {
-    let tag = e.target.value;
-    let tagList = [];
-    tagList.push(tag);
-    setTag(tagList);
+    // let tag = e.target.value;
+    // let tagList = [];
+    // tagList.push(tag);
+    // setTag(tagList);
   };
 
   const handleCreateArticle = () => {
     dispatch(createArticle(write, about, tag, title));
+    history.push("/");
   };
 
   return (

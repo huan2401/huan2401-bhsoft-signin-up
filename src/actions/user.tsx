@@ -1,70 +1,51 @@
-import axios from "axios";
+import userApi from "../api/userApi";
 
 export const loadProfile =
   (email: string, password: string) => async (dispatch: any) => {
-    const url: string = "https://conduit.productionready.io/api/users/login";
-    const raw = JSON.stringify({
-      user: {
-        email: email,
-        password: password,
-      },
-    });
-    axios
-      .post(url, raw, {
-        headers: {
-          "content-type": "application/json",
+    try {
+      const raw = JSON.stringify({
+        user: {
+          email: email,
+          password: password,
         },
-      })
-      .then((response: any) => {
-        dispatch(saveProfile(response.data.user));
-      })
-      .catch((error: any) => {
-        alert("Tài khoản hoặc mật khẩu chưa đúng!");
-        console.log(error);
       });
+      console.log(raw);
+      const response: any = await userApi.login(raw);
+      localStorage.setItem("token", response.user.token);
+      console.log(response.user);
+      dispatch(saveProfile(response.user));
+      dispatch(getUser(response.user));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 export const getUserProfile = () => async (dispatch: any) => {
-  const url: string = "https://conduit.productionready.io/api/user";
-  axios
-    .get(url, {
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((response: any) => {
-      dispatch(getUser(response.data.user));
-    })
-    .catch((error: any) => {
-      console.log(error);
-    });
+  try {
+    const response: any = await userApi.getUserProfile();
+    dispatch(getUser(response.user));
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const register =
   (username: string, email: string, password: string) =>
   async (dispatch: any) => {
-    const url: string = "https://conduit.productionready.io/api/users";
-    const raw = JSON.stringify({
-      user: {
-        username: username,
-        email: email,
-        password: password,
-      },
-    });
-    axios
-      .post(url, raw, {
-        headers: {
-          "content-type": "application/json",
+    try {
+      const raw = JSON.stringify({
+        user: {
+          username: username,
+          email: email,
+          password: password,
         },
-      })
-      .then((response: any) => {
-        dispatch(saveProfile(response.data.user));
-      })
-      .catch((error: any) => {
-        alert("Tài khoản đã tồn tại!");
-        console.log(error);
       });
+      const response: any = await userApi.register(raw);
+      localStorage.setItem("token", response.user.token);
+      dispatch(saveProfile(response.user));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 export const updateProfile =
@@ -76,64 +57,27 @@ export const updateProfile =
     password: string
   ) =>
   async (dispatch: any) => {
-    const url: string = "https://conduit.productionready.io/api/user";
-    const raw = JSON.stringify({
-      bio: bio,
-      email: email,
-      image: picture,
-      password: password,
-      username: name,
-    });
-    axios
-      .put(url, raw, {
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Token ${localStorage.getItem("token")}`,
+    try {
+      const raw = JSON.stringify({
+        user: {
+          bio: bio,
+          email: email,
+          image: picture,
+          password: password,
+          username: name,
         },
-      })
-      .then((response: any) => {
-        console.log(response);
-        // dispatch(saveProfile(response.data.user));
-      })
-      .catch((error: any) => {
-        // alert("Email đã được sử dụng!");
-        console.log(error);
       });
-  };
-
-export const createArticle =
-  (body: string, description: string, tagList: string[], title: string) =>
-  async (dispatch: any) => {
-    const url: string = "https://conduit.productionready.io/api/articles";
-    const raw = JSON.stringify({
-      articles: {
-        body: body,
-        description: description,
-        tagList: tagList,
-        title: title,
-      },
-    });
-    axios
-      .post(url, raw, {
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((response: any) => {
-        console.log(response);
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+      const response: any = await userApi.updateProfile(raw);
+      localStorage.setItem("token", response.user.token);
+      dispatch(getUser(response.user));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 const saveProfile = (profile: any) => ({
   type: "SAVE-PROFILE",
   payload: profile,
-});
-export const logout = () => ({
-  type: "LOGOUT",
 });
 
 const getUser = (profile: any) => ({

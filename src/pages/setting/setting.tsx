@@ -1,18 +1,22 @@
 import React from "react";
 import { useHistory } from "react-router";
-import { logout, updateProfile } from "../../actions/user";
-import { useDispatch } from "react-redux";
+import { getUserProfile, updateProfile } from "../../actions/user";
+import { useSelector, useDispatch } from "react-redux";
 import "./setting.scss";
 
 const Setting: React.FC = () => {
   const history = useHistory();
 
   const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(getUserProfile());
+  }, []);
+  const profile = useSelector((state: any) => state.user.profile);
 
   const [picture, setPicture] = React.useState("");
-  const [name, setName] = React.useState("");
-  const [bio, setBio] = React.useState("");
-  const [email, setEmail] = React.useState("");
+  const [name, setName] = React.useState(profile ? profile.username : "");
+  const [bio, setBio] = React.useState(profile ? profile.bio : "");
+  const [email, setEmail] = React.useState(profile ? profile.email : "");
   const [password, setPassword] = React.useState("");
 
   const handlePicture = (e: any) => {
@@ -36,11 +40,14 @@ const Setting: React.FC = () => {
   };
 
   const handleUpdateProfile = () => {
+    if (name === "" || email === "") {
+      setName(profile.username);
+      setEmail(profile.email);
+    }
     dispatch(updateProfile(picture, name, bio, email, password));
   };
 
   const handleLogout = () => {
-    dispatch(logout());
     history.push("/signin");
     localStorage.removeItem("token");
     localStorage.setItem("activeId", "1");
@@ -61,17 +68,38 @@ const Setting: React.FC = () => {
           name="name"
           placeholder="Your Name"
           onChange={handleName}
+          value={
+            profile
+              ? name
+                ? name
+                : profile.username + name.replace(profile.username, "")
+              : ""
+          }
         />
         <textarea
           name="bio"
           placeholder="Short bio about you"
           onChange={handleBio}
+          value={
+            profile
+              ? bio
+                ? bio
+                : profile.bio + bio.replace(profile.bio, "")
+              : ""
+          }
         />
         <input
           type="text"
           name="email"
           placeholder="Email"
           onChange={handleEmail}
+          value={
+            profile
+              ? email
+                ? email
+                : profile.email + email.replace(profile.email, "")
+              : ""
+          }
         />
         <input
           type="password"

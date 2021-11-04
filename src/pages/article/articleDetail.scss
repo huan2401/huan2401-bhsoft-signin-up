@@ -1,0 +1,35 @@
+.article {
+  width: 100%;
+  .article-title {
+    width: 100%;
+    height: 12rem;
+    background-color: #352e2e;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    h1 {
+      color: white;
+    }
+
+    div.user {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      p {
+        color: white;
+        margin: 0;
+      }
+    }
+  }
+  .article-content {
+    width: 114rem;
+    margin: auto;
+    @media screen and (max-width: 48em) {
+      width: 80%;
+    }
+  }
+}
