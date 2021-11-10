@@ -11,7 +11,7 @@ const Header: React.FC = () => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getUserProfile());
-  }, [activeNav]);
+  }, []);
   const username: any = useSelector((state: any) => state.user);
 
   if (localStorage.getItem("token")) {

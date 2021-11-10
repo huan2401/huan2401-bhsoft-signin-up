@@ -36,19 +36,23 @@ const Home: React.FC = () => {
     return str;
   };
 
-  localStorage.setItem("activeId", "0");
+  // localStorage.setItem("activeId", "0");
   const [activeId, setActiveId] = React.useState(0);
   const dispatch = useDispatch();
   const location = useLocation();
 
   React.useEffect(() => {
-    dispatch(loadArticle());
+    if (localStorage.getItem("token")) {
+      dispatch(loadArticle());
+    }
   }, [location.pathname]);
-  const articles = useSelector((state: any) => state.articles);
+  let articles = useSelector((state: any) => state.articles);
   let category: string[] = ["Global Feed"];
 
   if (localStorage.getItem("token")) {
     category.push("Your feed");
+  } else {
+    articles = [];
   }
 
   const handleActive = (index: number) => {

@@ -9,10 +9,8 @@ export const loadProfile =
           password: password,
         },
       });
-      console.log(raw);
       const response: any = await userApi.login(raw);
       localStorage.setItem("token", response.user.token);
-      console.log(response.user);
       dispatch(saveProfile(response.user));
       dispatch(getUser(response.user));
     } catch (error) {
@@ -23,6 +21,7 @@ export const loadProfile =
 export const getUserProfile = () => async (dispatch: any) => {
   try {
     const response: any = await userApi.getUserProfile();
+    localStorage.setItem("token", response.user.token);
     dispatch(getUser(response.user));
   } catch (error) {
     console.log(error);

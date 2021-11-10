@@ -48,8 +48,8 @@ const Setting: React.FC = () => {
   };
 
   const handleLogout = () => {
-    history.push("/signin");
     localStorage.removeItem("token");
+    history.push("/signin");
     localStorage.setItem("activeId", "1");
   };
 
